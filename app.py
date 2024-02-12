@@ -36,7 +36,9 @@ HOME_PAGE_TEMPLATE = """
                 </button>
               </div>
               <div class="modal-body">
-                Expaaander is a web-based application designed to enhance online safety and transparency by expanding shortened URLs...
+                Expaaander is a web-based Flask application designed with Python for online safety and transparency by expanding shortened URLs.
+                
+                There is 0 logging, idc what's entered
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
