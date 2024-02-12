@@ -1,78 +1,61 @@
-from flask import Flask, request, render_template_string, redirect, url_for
+from flask import Flask, render_template_string, request
 import requests
 
 app = Flask(__name__)
 
-# HTML template for the home page
-HOME_PAGE_TEMPLATE = """
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        # Your form processing logic here
+        pass
+    # Inline HTML with Bootstrap modal for "Learn More"
+    return render_template_string("""
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>URL Expander</title>
+    <title>Expaaander</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1 style="text-align: center;">Expaaander</h1>
-    <form action="/expand" method="post" style="text-align: center;">
-        <input type="text" name="short_url" placeholder="Enter shortened URL" required>
-        <button type="submit">Expand</button>
-    </form>
-</body>
-</html>
-"""
+    <div class="container mt-3">
+        <h1>Welcome to Expaaander</h1>
+        <!-- Your form or content here -->
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#learnMoreModal">
+            Learn More
+        </button>
 
-@app.route('/')
-def home():
-    return HOME_PAGE_TEMPLATE
-
-@app.route('/expand', methods=['POST'])
-def expand_url():
-    short_url = request.form['short_url']
-    method = request.form.get('method', 'head')
-    try:
-        if method == 'get':
-            response = requests.get(short_url, allow_redirects=True)
-        else:  # Default to HEAD request
-            response = requests.head(short_url, allow_redirects=True)
-        # Check if the URL could not be expanded (e.g., status code 4xx/5xx)
-        if response.status_code >= 400:
-            raise requests.RequestException("URL could not be expanded.")
-        expanded_url = response.url
-        result_page = f"""
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Expanded URL</title>
-</head>
-<body style="text-align: center; margin-top: 20%;">
-    <h2>✨<a href="{expanded_url}" target="_blank">{expanded_url}</a>✨</h2>
-    <form action="/" style="margin-bottom: 20px;">
-        <button type="submit">Search Again</button>
-    </form>
-    {'<form action="/expand" method="post" style="display: inline;"><input type="hidden" name="short_url" value="' + short_url + '"><input type="hidden" name="method" value="get"><button type="submit">Try with GET request</button></form>' if method != 'get' else ''}
+        <!-- Modal -->
+        <div class="modal fade" id="learnMoreModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">About Expaaander</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Expaaander is a web-based application designed to enhance online safety and transparency by expanding shortened URLs...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-"""
-        return result_page
-    except requests.RequestException as e:
-        # Show an error message if the URL could not be expanded
-        error_message = str(e)
-        return render_template_string(f"""
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-</head>
-<body style="text-align: center; margin-top: 20%;">
-    <h2>Error expanding URL: {error_message}</h2>
-    <form action="/" style="margin-bottom: 20px;">
-        <button type="submit">Try Another URL</button>
-    </form>
-</body>
-</html>
-""")
+    """)
 
 if __name__ == '__main__':
     app.run(debug=True)
