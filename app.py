@@ -10,6 +10,7 @@ HOME_PAGE_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <title>URL Expander</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">  <!-- Favicon link -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
