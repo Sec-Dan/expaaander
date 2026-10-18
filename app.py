@@ -12,13 +12,14 @@ HOME_PAGE_TEMPLATE = """
     <title>URL Expander</title>
     <link rel="icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script defer src="https://analytics.swiftworks.dev/script.js" data-website-id="ee822acf-51a1-4199-935f-5cf15cb0e761"></script>
 </head>
 <body>
     <div style="text-align: center;">
         <h1>Expaaander</h1>
         <form action="/expand" method="post">
             <input type="text" name="short_url" placeholder="Enter shortened URL" required>
-            <button type="submit">Expand</button>
+            <button type="submit" data-umami-event="url-expand">Expand</button>
         </form>
 
         <!-- Learn More Button -->
@@ -74,6 +75,7 @@ def expand_url():
 <head>
     <meta charset="UTF-8">
     <title>Expanded URL</title>
+    <script defer src="https://analytics.swiftworks.dev/script.js" data-website-id="ee822acf-51a1-4199-935f-5cf15cb0e761"></script>
 </head>
 <body style="text-align: center; margin-top: 20%;">
     <h2>✨<a href="{{expanded_url}}" target="_blank">{{expanded_url}}</a>✨</h2>
@@ -91,6 +93,7 @@ def expand_url():
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
+    <script defer src="https://analytics.swiftworks.dev/script.js" data-website-id="ee822acf-51a1-4199-935f-5cf15cb0e761"></script>
 </head>
 <body style="text-align: center; margin-top: 20%;">
     <h2>Error expanding URL: {{error_message}}</h2>
